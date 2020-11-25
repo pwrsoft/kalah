@@ -1,36 +1,49 @@
 # Kalah Game
-Java RESTful Web Service implementation of 6-stone Kalah Game 
+Java RESTful Web Service implementation of 6-stone Kalah Game.
 
 This web service enables 2 human players to play the game, each in his own computer.
 
+## Prerequisites
+
+[Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+and
+[Maven](https://maven.apache.org/install.html) build tool.
+
 ## Installation
 
-Unpack zip application archive into the current directory
+Unpack zip application archive into the current directory:
 ```bash
 unzip kalah.zip
 ```
 
-After that change the directory to kalah
+After that change the directory to kalah:
 ```bash
 cd kalah
 ````
 
 ## Usage
 
-If you use [maven](https://maven.apache.org/install.html), you can run the application by running this command
+* Run tests
+```bash
+mvn test
+```
+
+* Run web application:
 
 ```bash
-./mvnw spring-boot:run
+mvn spring-boot:run
 ```
+
+by default application runs on localhost port 8080
 
 ## Endpoint design specification
 
-### Creation of the game should be possible with the command:
+* Creation of the game should be possible with the command:
 ```bash
 curl --header "Content-Type: application/json" --request POST http://<host>:<port>/games
 ```
 
-#### Response:
+Response:
 
 *HTTP code: 201*
 
@@ -39,7 +52,7 @@ curl --header "Content-Type: application/json" --request POST http://<host>:<por
 **id:** unique identifier of a game
 
 **url:** link to the game created
-### Make a move:
+* Make a move:
 ```bash
 curl --header "Content-Type: application/json" --request PUT http://<host>:<port>/games/{gameId}/pits/{pitId}
 ```
@@ -49,8 +62,7 @@ curl --header "Content-Type: application/json" --request PUT http://<host>:<port
 *Pits are numbered from 1 to 14 where 7 and 14 are the kalah (or house)
 of each player*
 
-
-#### Response:
+Response:
 
 *HTTP code:* 200
 

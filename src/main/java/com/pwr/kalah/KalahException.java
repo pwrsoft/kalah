@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * instead of the default error "Internal Server Error" (status code 500) exception.
  */
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class BadArgumentsException extends RuntimeException {
+public class KalahException extends RuntimeException {
 
-    public BadArgumentsException(String message) {
+    public KalahException(String message) {
         super(message);
     }
 }

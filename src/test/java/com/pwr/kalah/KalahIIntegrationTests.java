@@ -76,7 +76,7 @@ public class KalahIIntegrationTests {
     public void testNonExistingGameNumber() throws Exception {
         mockMvc.perform(put("/games/99999999/pits/1"))
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof BadArgumentsException))
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof KalahException))
                 .andExpect(result -> assertEquals(ErrorMessages.INVALID_GAME_NUMBER, Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
 
