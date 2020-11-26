@@ -14,8 +14,11 @@
  *                               limitations under the License.
  */
 
-package com.pwr.kalah;
+package com.pwr.kalah.model;
 
+import com.pwr.kalah.exception.KalahGameException;
+import com.pwr.kalah.model.KalahErrorMessages;
+import com.pwr.kalah.model.KalahGame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,10 +26,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Kalah game Unit Tests
+ * {@link KalahGame} Unit Tests
  */
-@DisplayName("Kalah game Unit Tests")
-class KalahUnitTests {
+@DisplayName("KalahGame Unit Tests")
+class KalahGameTest {
 
     private final KalahGame game = new KalahGame(1L);
 
@@ -120,86 +123,10 @@ class KalahUnitTests {
     }
 
     @Test
-    void testEndGameAndScoring_GAME_OVER() {
-        Exception exception;
-        // New game, test non-repetitive
-        game.fillGameFieldWithSample(new int[]{0, 0, 0, 0, 1, 0, 19, 0, 0, 0, 0, 0, 0, 10});
-        exception = assertThrows(
-                KalahException.class,
-                () -> game.makeNextMove(5));
-        assertEquals(String.format(ErrorMessages.GAME_OVER, 20, 10), exception.getMessage());
-
-        // New game, test repetitive move
-        game.setCurrentPlayer(1);
-        game.fillGameFieldWithSample(new int[]{0, 0, 0, 0, 0, 1, 19, 0, 0, 0, 0, 0, 0, 10});
-        exception = assertThrows(
-                KalahException.class,
-                () -> game.makeNextMove(6));
-        assertEquals(String.format(ErrorMessages.GAME_OVER, 20, 10), exception.getMessage());
-
-        // New game, make first player's move
-        // test second player move
-        game.setCurrentPlayer(2);
-        game.fillGameFieldWithSample(new int[]{0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 1, 9});
-        exception = assertThrows(
-                KalahException.class,
-                () -> game.makeNextMove(13));
-        assertEquals(String.format(ErrorMessages.GAME_OVER, 20, 10), exception.getMessage());
-
-    }
-
-    @Test
     void testCountPlayersStones() {
         game.makeNextMove(1);
         assertEquals(35, game.countPlayerStones(1, false), "Counting pit stones of player 1");
         assertEquals(36, game.countPlayerStones(1, true), "Counting all stones of player 1");
 
     }
-
-    @Test
-    void testException_YOU_CAN_NOT_PUT_LESS_THAN_0_STONES_IN_A_PIT() {
-        Exception exception = assertThrows(
-                KalahException.class,
-                () -> game.setPitStones(1, -1));
-        assertEquals(ErrorMessages.YOU_CAN_NOT_PUT_LESS_THAN_0_STONES_IN_A_PIT, exception.getMessage());
-    }
-
-    @Test
-    void testException_INVALID_PIT_NUMBER() {
-        Exception exception = assertThrows(
-                KalahException.class,
-                () -> game.setPitStones(0, 1));
-        assertEquals(ErrorMessages.INVALID_PIT_NUMBER, exception.getMessage());
-    }
-
-    @Test
-    void testException_INVALID_MOVE() {
-        Exception exception;
-        exception = assertThrows(
-                KalahException.class,
-                () -> game.makeNextMove(7));
-        assertEquals(ErrorMessages.INVALID_MOVE, exception.getMessage());
-
-        exception = assertThrows(
-                KalahException.class,
-                () -> game.makeNextMove(14));
-        assertEquals(ErrorMessages.INVALID_MOVE, exception.getMessage());
-
-        exception = assertThrows(
-                KalahException.class,
-                () -> game.makeNextMove(8));
-        assertEquals(ErrorMessages.INVALID_MOVE, exception.getMessage());
-    }
-
-    @Test
-    void testZeroStonesPlayersPitMove_INVALID_MOVE() {
-        // Make first move (with repeat rule applied)
-        game.makeNextMove(1);
-        // Make move into the same pit
-        Exception exception = assertThrows(
-                KalahException.class,
-                () -> game.makeNextMove(1));
-        assertEquals(ErrorMessages.INVALID_MOVE, exception.getMessage());
-    }
-
 }
