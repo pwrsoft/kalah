@@ -70,15 +70,6 @@ public class KalahGameController {
         return ResponseEntity.ok(game);
     }
 
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class, ConstraintViolationException.class})
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = KalahErrorMessages.NON_NUMERIC_VALUE)
-    public HashMap<String, String> handleNumericExceptions(Exception e) {
-        HashMap<String, String> response = new HashMap<>();
-        response.put("message", e.getMessage());
-        response.put("error", e.getClass().getSimpleName());
-        return response;
-    }
-
     /**
      * Validate game number
      * @param pit game number
