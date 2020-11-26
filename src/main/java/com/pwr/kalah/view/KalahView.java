@@ -14,13 +14,13 @@
  *                               limitations under the License.
  */
 
-package com.pwr.kalah;
+package com.pwr.kalah.view;
 
 /**
  * This class is used for differentiating JSON fields representation
  * in different REST API endpoints
  */
 public class KalahView {
-    static class NewGame {}
-    static class GameMove {}
+    public static class NewGame {}
+    public static class GameMove {}
 }
