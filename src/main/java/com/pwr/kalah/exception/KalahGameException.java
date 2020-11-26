@@ -14,7 +14,7 @@
  *                               limitations under the License.
  */
 
-package com.pwr.kalah;
+package com.pwr.kalah.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * instead of the default error "Internal Server Error" (status code 500) exception.
  */
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class KalahException extends RuntimeException {
+public class KalahGameException extends RuntimeException {
 
-    public KalahException(String message) {
+    public KalahGameException(String message) {
         super(message);
     }
 }

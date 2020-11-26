@@ -14,9 +14,10 @@
  *                               limitations under the License.
  */
 
-package com.pwr.kalah;
+package com.pwr.kalah.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pwr.kalah.exception.KalahGameException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-@DisplayName("Kalah game Integration Tests")
-public class KalahIIntegrationTests {
+@DisplayName("KalahGame Integration Tests")
+public class KalahGameIT {
     @Autowired
     private MockMvc mockMvc;
 
@@ -64,11 +65,11 @@ public class KalahIIntegrationTests {
         // Create first game
         Long firstGameId = createOneGame();
         // Make move in first game
-        checkResultActionsMakeMove(firstGameId);
+        makeMoveAndCheckResultActions(firstGameId, 1);
         // Create second game
         Long secondGameId = createOneGame();
         // Make move in second game
-        checkResultActionsMakeMove(secondGameId);
+        makeMoveAndCheckResultActions(secondGameId, 1);
     }
 
     @Test
@@ -76,8 +77,8 @@ public class KalahIIntegrationTests {
     public void testNonExistingGameNumber() throws Exception {
         mockMvc.perform(put("/games/99999999/pits/1"))
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof KalahException))
-                .andExpect(result -> assertEquals(ErrorMessages.INVALID_GAME_NUMBER, Objects.requireNonNull(result.getResolvedException()).getMessage()));
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof KalahGameException))
+                .andExpect(result -> assertEquals(KalahErrorMessages.INVALID_GAME_NUMBER, Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
 
     @Test
@@ -86,16 +87,16 @@ public class KalahIIntegrationTests {
         createOneGame();
         mockMvc.perform(put("/games/1/pits/0"))
                 .andExpect(status().isBadRequest())
-                .andExpect(status().reason(ErrorMessages.NON_NUMERIC_VALUE));
+                .andExpect(status().reason(KalahErrorMessages.NON_NUMERIC_VALUE));
         mockMvc.perform(put("/games/1/pits/a"))
                 .andExpect(status().isBadRequest())
-                .andExpect(status().reason(ErrorMessages.NON_NUMERIC_VALUE));
+                .andExpect(status().reason(KalahErrorMessages.NON_NUMERIC_VALUE));
         mockMvc.perform(put("/games/a/pits/a"))
                 .andExpect(status().isBadRequest())
-                .andExpect(status().reason(ErrorMessages.NON_NUMERIC_VALUE));
+                .andExpect(status().reason(KalahErrorMessages.NON_NUMERIC_VALUE));
         mockMvc.perform(put("/games/1/pits/1.1"))
                 .andExpect(status().isBadRequest())
-                .andExpect(status().reason(ErrorMessages.NON_NUMERIC_VALUE));    }
+                .andExpect(status().reason(KalahErrorMessages.NON_NUMERIC_VALUE));    }
 
     /**
      * This helper creates the new game and return it's {@link ResultActions}
@@ -111,12 +112,12 @@ public class KalahIIntegrationTests {
 
     /**
      * This helper make a game move and return it's {@link ResultActions}
-     * Also it verifies the response HTTP and game status as well as game ID
+     * Also it verifies the response HTTP and game Status as well as game ID
      *
      * @throws Exception exception
      */
-    private void checkResultActionsMakeMove(Long gameId) throws Exception {
-        mockMvc.perform(put("/games/" + gameId + "/pits/1"))
+    private void makeMoveAndCheckResultActions(Long gameId, int pit) throws Exception {
+        mockMvc.perform(put("/games/" + gameId + "/pits/" + pit))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(String.valueOf(gameId))))
                 .andExpect((jsonPath("$.status",
