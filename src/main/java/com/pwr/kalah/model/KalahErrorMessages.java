@@ -14,12 +14,14 @@
  *                               limitations under the License.
  */
 
-package com.pwr.kalah;
+package com.pwr.kalah.model;
+
+import com.pwr.kalah.controller.KalahGameController;
 
 /**
- * This interface is a collection of error messages used both in {@link KalahGame} as well as in {@link KalahController} classes
+ * This interface is a collection of error messages used both in {@link KalahGame} as well as in {@link KalahGameController} classes
  */
-public interface ErrorMessages {
+public interface KalahErrorMessages {
     String INVALID_GAME_NUMBER = "This game is not created yet";
     String INVALID_PIT_NUMBER = "Invalid pit number. Valid numbers are from 1 to " + KalahGame.MAX_PITS;
     String NON_NUMERIC_VALUE = "Game id and pit number should be numeric and valid";
