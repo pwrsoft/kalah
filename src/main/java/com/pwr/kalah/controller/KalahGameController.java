@@ -75,8 +75,9 @@ public class KalahGameController {
      * @param pit game number
      */
     private void validateGameNumber(Long pit) {
-        if (!games.containsKey(pit))
+        if (!games.containsKey(pit)) {
             throw new KalahGameException(KalahErrorMessages.INVALID_GAME_NUMBER);
+        }
     }
 
 }

@@ -18,6 +18,9 @@ package com.pwr.kalah.model;
 
 import com.pwr.kalah.exception.KalahGameException;
 
+/**
+ * A game of 6-stone Kalah
+ */
 public interface KalahGameInterface extends KalahErrorMessages {
     int MAX_PITS = 14;  // The sum of of all pits on the game field pits (including each player's pits and the two kalah pits)
     int MAX_STONES = 6; // The maximum stones in a pit number (pre-defined for a game of 6-stone Kalah)
@@ -96,8 +99,9 @@ public interface KalahGameInterface extends KalahErrorMessages {
      * @param pit pit number
      */
     default void validatePitNumber(int pit) {
-        if (pit < 1 || pit > MAX_PITS)
+        if (pit < 1 || pit > MAX_PITS) {
             throw new KalahGameException(INVALID_PIT_NUMBER);
+        }
     }
 
     /**
@@ -183,8 +187,12 @@ public interface KalahGameInterface extends KalahErrorMessages {
      * @return the result of checking
      */
     default boolean isPitMine(int pit) {
-        if (getCurrentPlayer() == 1) return pit >= 1 && pit < MAX_PITS / 2;
-        else return pit > MAX_PITS / 2 && pit < MAX_PITS;
+        if (getCurrentPlayer() == 1) {
+            return pit >= 1 && pit < MAX_PITS / 2;
+        }
+        else {
+            return pit > MAX_PITS / 2 && pit < MAX_PITS;
+        }
     }
 
     /**

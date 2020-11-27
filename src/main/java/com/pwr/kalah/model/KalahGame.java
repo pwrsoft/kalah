@@ -20,16 +20,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pwr.kalah.exception.KalahGameException;
 import com.pwr.kalah.view.KalahView;
+import org.springframework.lang.NonNull;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A game of Kalah - Java implementation
- *
- * @author Volodymyr Protsaylo (email: pwr@ukr.net)
+ * A game of 6-stone Kalah implementation
  */
-
 public class KalahGame implements KalahGameInterface {
     @JsonView({KalahView.GameMove.class, KalahView.NewGame.class})
     @JsonProperty("id")
@@ -43,7 +41,7 @@ public class KalahGame implements KalahGameInterface {
     @JsonProperty("status")
     // TODO replace by KalahBoard class
     //private KalahBoard board;
-    Map<Integer, Integer> board = new HashMap<>();
+    Map<Integer, Integer> board = new ConcurrentHashMap<>();
 
 
     @JsonIgnore
@@ -93,11 +91,13 @@ public class KalahGame implements KalahGameInterface {
         while (availablePitStones > 0) {
             // cycle through the pits
             currentPit++;
-            if (currentPit > MAX_PITS)
+            if (currentPit > MAX_PITS) {
                 currentPit = 1;
+            }
             // skip another player's Kalah
-            if (currentPit == getPlayersKalahPit(getOppositePlayer()))
+            if (currentPit == getPlayersKalahPit(getOppositePlayer())) {
                 continue;
+            }
             // add the stones one by one
             addPitStones(currentPit, 1);
             availablePitStones--;
@@ -168,19 +168,22 @@ public class KalahGame implements KalahGameInterface {
 
     public void setPitStones(int pit, int stones) {
         validatePitNumber(pit);
-        if (stones < 0)
+        if (stones < 0) {
             throw new KalahGameException(YOU_CAN_NOT_PUT_LESS_THAN_0_STONES_IN_A_PIT);
+        }
         board.put(pit, stones);
     }
 
     public void fillGameFieldWithSample(int[] sampleBoard) {
-        if (sampleBoard.length < 1 || sampleBoard.length > MAX_PITS)
+        if (sampleBoard.length < 1 || sampleBoard.length > MAX_PITS) {
             throw new IllegalArgumentException(INPUT_ARRAY_LENGTH_SIZE_IS_INVALID);
+        }
         for (int i = 0; i < sampleBoard.length; i++) {
             board.put(i + 1, sampleBoard[i]);
         }
     }
 
+    @NonNull
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
