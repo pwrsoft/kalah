@@ -132,8 +132,8 @@ public interface KalahGameInterface extends KalahErrorMessages {
      */
     default int countPlayerStones(int player, boolean countKalah) {
         int stonesCount = 0;
-        int firstPit = player == 1 ? 1 : 8;
-        for (int i = firstPit; i < firstPit + 6 + (countKalah ? 1 : 0); i++) {
+        int firstPit = player == 1 ? 1 : MAX_STONES + 2;
+        for (int i = firstPit; i < firstPit + MAX_STONES + (countKalah ? 1 : 0); i++) {
             stonesCount += getPitStones(i);
         }
         return stonesCount;
