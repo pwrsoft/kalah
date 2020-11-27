@@ -39,14 +39,11 @@ public class KalahGame implements KalahGameInterface {
 
     @JsonView({KalahView.GameMove.class})
     @JsonProperty("status")
-    // TODO replace by KalahBoard class
-    //private KalahBoard board;
-    Map<Integer, Integer> board = new ConcurrentHashMap<>();
-
+    private Map<Integer, Integer> board = new ConcurrentHashMap<>();
 
     @JsonIgnore
-    // The number of player who makes next move (1 or 2)
-    private int currentPlayer;
+    private int currentPlayer; // The number of player who makes next move (1 or 2)
+
 
     /**
      * Kalah game constructor
@@ -57,8 +54,6 @@ public class KalahGame implements KalahGameInterface {
     public KalahGame(Long gameId, String gameUrl) {
         this.gameId = gameId;
         this.gameUrl = gameUrl;
-        // TODO replace by KalahBoard class
-        //board = new KalahBoard();
         initGameField();
     }
 
@@ -151,6 +146,11 @@ public class KalahGame implements KalahGameInterface {
             );
         }
 
+    }
+
+    @Override
+    public String getGameUrl() {
+        return gameUrl;
     }
 
     @Override
