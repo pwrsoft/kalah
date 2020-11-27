@@ -33,9 +33,11 @@ public interface KalahGameInterface extends KalahErrorMessages {
         for (int i = 1; i <= MAX_PITS; i++) {
             setPitStones(i, MAX_STONES);
         }
+
         // Empty two Kalah pits
         setPitStones(MAX_PITS / 2, 0);
         setPitStones(MAX_PITS, 0);
+        
         // The first player makes the first move.
         setCurrentPlayer(1);
     }

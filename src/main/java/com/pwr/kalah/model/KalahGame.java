@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pwr.kalah.exception.KalahGameException;
 import com.pwr.kalah.view.KalahView;
-import org.springframework.lang.NonNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +38,7 @@ public class KalahGame implements KalahGameInterface {
 
     @JsonView({KalahView.GameMove.class})
     @JsonProperty("status")
-    private Map<Integer, Integer> board = new ConcurrentHashMap<>();
+    private final Map<Integer, Integer> board = new ConcurrentHashMap<>();
 
     @JsonIgnore
     private int currentPlayer; // The number of player who makes next move (1 or 2)
