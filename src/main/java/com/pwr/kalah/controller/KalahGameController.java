@@ -17,25 +17,19 @@
 package com.pwr.kalah.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.pwr.kalah.model.KalahErrorMessages;
-import com.pwr.kalah.exception.KalahGameException;
 import com.pwr.kalah.model.KalahGame;
+import com.pwr.kalah.service.KalahGameService;
 import com.pwr.kalah.view.KalahView;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * {@link KalahGame} RESTful Web Service controller
@@ -44,40 +38,29 @@ import java.util.concurrent.atomic.AtomicLong;
 @Validated
 public class KalahGameController {
 
-    private final Map<Long, KalahGame> games = new HashMap<>();
-    private final AtomicLong gamesCount = new AtomicLong();
+    private final KalahGameService gameService;
 
-    public KalahGameController() { gamesCount.set(1L); }
+    public KalahGameController(KalahGameService gameService) {
+        this.gameService = gameService;
+    }
 
     @PostMapping(path = "/games")
     @JsonView(KalahView.NewGame.class)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<KalahGame> createGame(HttpServletRequest request) {
-        Long gameId = gamesCount.getAndIncrement();
-        String gameUrl = request.getRequestURL().toString() + "/" + gameId;
-        KalahGame newGame = new KalahGame(gameId, gameUrl);
-        games.put(gameId, newGame);
-        return ResponseEntity.created(URI.create(gameUrl)).body(newGame);
+        KalahGame newGame = gameService.createGame(request.getRequestURL().toString());
+        return ResponseEntity.created(URI.create(newGame.getGameUrl())).body(newGame);
     }
 
     @PutMapping(path = "/games/{gameId}/pits/{pitId}")
     @JsonView(KalahView.GameMove.class)
-    public ResponseEntity<KalahGame> makeMove(@PathVariable @Digits(integer=19, fraction=0) @Min(1) @Max(Long.MAX_VALUE) Long gameId,
-                              @PathVariable @Digits(integer=2, fraction=0) @Min(1) @Max(14) int pitId) {
-        validateGameNumber(gameId);
-        KalahGame game = games.get(gameId);
-        game.makeNextMove(pitId);
+    public ResponseEntity<KalahGame> makeMove(
+            @PathVariable @Digits(integer=19, fraction=0) @Min(1) @Max(Long.MAX_VALUE) Long gameId,
+            @PathVariable @Digits(integer=2, fraction=0) @Min(1) @Max(14) int pitId) {
+        KalahGame game = gameService.makeMove(gameId, pitId);
         return ResponseEntity.ok(game);
     }
 
-    /**
-     * Validate game number
-     * @param pit game number
-     */
-    private void validateGameNumber(Long pit) {
-        if (!games.containsKey(pit)) {
-            throw new KalahGameException(KalahErrorMessages.INVALID_GAME_NUMBER);
-        }
-    }
+
 
 }
