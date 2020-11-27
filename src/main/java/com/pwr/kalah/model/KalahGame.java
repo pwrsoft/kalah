@@ -131,8 +131,8 @@ public class KalahGame implements KalahGameInterface {
             int oppositePlayer = getOppositePlayer();
             int oppositePlayerStones = countPlayerStones(oppositePlayer, false);
             // moving winner stones to his kalah
-            int firstPit = oppositePlayer == 1 ? 1 : 8;
-            for (int i = firstPit; i < firstPit + 6; i++) {
+            int firstPit = oppositePlayer == 1 ? 1 : MAX_STONES + 2;
+            for (int i = firstPit; i < firstPit + MAX_STONES; i++) {
                 setPitStones(i, 0);
             }
             addPitStones(getPlayersKalahPit(oppositePlayer), oppositePlayerStones);
@@ -183,7 +183,6 @@ public class KalahGame implements KalahGameInterface {
         }
     }
 
-    @NonNull
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
