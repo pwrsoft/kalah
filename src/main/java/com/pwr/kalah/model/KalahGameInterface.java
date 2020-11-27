@@ -67,6 +67,12 @@ public interface KalahGameInterface extends KalahErrorMessages {
      */
     Long getGameId();
 
+    /** Get game URL
+     *
+     * @return game URL
+     */
+     String getGameUrl();
+
     /**
      * Put a number of stones stones in a pit
      *
