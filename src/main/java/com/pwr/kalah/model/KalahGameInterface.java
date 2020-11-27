@@ -169,8 +169,6 @@ public interface KalahGameInterface extends KalahErrorMessages {
         return pit == MAX_PITS / 2 || pit == MAX_PITS;
     }
 
-    // The next methods are used in tests, thus having a package-wide access
-
     /**
      * Change the current player to the opposite
      *
