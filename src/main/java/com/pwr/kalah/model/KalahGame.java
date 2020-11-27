@@ -80,6 +80,7 @@ public class KalahGame implements KalahGameInterface {
 
     public void makeNextMove(int pit) {
         validatePitNumber(pit);
+
         // The player who begins picks up all the stones in any of their own pits, and sows the stones on
         // to the right, one in each of the following pits, including his own Kalah
         int currentPit = pit;
@@ -89,15 +90,18 @@ public class KalahGame implements KalahGameInterface {
         }
         setPitStones(currentPit, 0);
         while (availablePitStones > 0) {
+
             // cycle through the pits
             currentPit++;
             if (currentPit > MAX_PITS) {
                 currentPit = 1;
             }
+
             // skip another player's Kalah
             if (currentPit == getPlayersKalahPit(getOppositePlayer())) {
                 continue;
             }
+
             // add the stones one by one
             addPitStones(currentPit, 1);
             availablePitStones--;
@@ -110,9 +114,11 @@ public class KalahGame implements KalahGameInterface {
             oppositePitStones = getPitStones(getOppositeSidePitNumber(currentPit));
         }
         if (isPitMine(currentPit) && !isPitMineKalah(currentPit) && getPitStones(currentPit) == 1 && oppositePitStones > 0) {
+
             // acquire stones from the opposite pit plus mine one stone put before
             setPitStones(getOppositeSidePitNumber(currentPit), 0);
             setPitStones(currentPit, 0);
+
             // put acquired stones in his own Kalah
             addPitStones(getPlayersKalahPit(currentPlayer), oppositePitStones + (isPitMineKalah(currentPit) ? 0 : 1));
         }
@@ -126,10 +132,12 @@ public class KalahGame implements KalahGameInterface {
 
         // The game is over as soon as one of the sides run out of stones.
         if (countPlayerStones(getCurrentPlayer(), false) == 0) {
+
             // The player who still has stones in his/her pits keeps
             // them and puts them in his/hers Kalah.
             int oppositePlayer = getOppositePlayer();
             int oppositePlayerStones = countPlayerStones(oppositePlayer, false);
+
             // moving winner stones to his kalah
             int firstPit = oppositePlayer == 1 ? 1 : MAX_STONES + 2;
             for (int i = firstPit; i < firstPit + MAX_STONES; i++) {
