@@ -21,14 +21,12 @@ import com.pwr.kalah.exception.KalahGameException;
 /**
  * A game of 6-stone Kalah
  */
-public interface KalahBoardInterface extends KalahErrorMessages {
-    int MAX_PITS = 14;  // The sum of of all pits on the game field pits (including each player's pits and the two kalah pits)
-    int MAX_STONES = 6; // The maximum stones in a pit number (pre-defined for a game of 6-stone Kalah)
+abstract class Board implements BoardInterface, KalahErrorMessages {
 
     /**
      * Initialize Kalah game field before the first move
      */
-    default void initGameField() {
+    public void initGameField() {
         // At the start of the game, six stones are put in each pit
         for (int i = 1; i <= MAX_PITS; i++) {
             setPitStones(i, MAX_STONES);
@@ -43,49 +41,12 @@ public interface KalahBoardInterface extends KalahErrorMessages {
     }
 
     /**
-     * Fill playing board with a sample values (used in unit tests only)
-     *
-     * @param sampleBoard values array
-     */
-    void fillGameFieldWithSample(int[] sampleBoard);
-
-    /**
-     * Get current player
-     *
-     * @return current player
-     */
-    int getCurrentPlayer();
-
-    /**
-     * Set current player
-     *
-     * @param currentPlayer player to be set as current
-     */
-    int setCurrentPlayer(int currentPlayer);
-
-     /**
-     * Put a number of stones stones in a pit
-     *
-     * @param pit    number of pit
-     * @param stones number of stones to put
-     */
-    void setPitStones(int pit, int stones);
-
-    /**
-     * Return number of stones in a pit
-     *
-     * @param pit pit number
-     * @return number of stones
-     */
-    int getPitStones(int pit);
-
-    /**
      * Add number of stones to a pit
      *
      * @param pit    pit number
      * @param stones number of stones to add
      */
-    default void addPitStones(int pit, int stones) {
+    public void addPitStones(int pit, int stones) {
         setPitStones(pit, getPitStones(pit) + stones);
     }
 
@@ -94,7 +55,7 @@ public interface KalahBoardInterface extends KalahErrorMessages {
      *
      * @param pit pit number
      */
-    default void validatePitNumber(int pit) {
+    public void validatePitNumber(int pit) {
         if (pit < 1 || pit > MAX_PITS) {
             throw new KalahGameException(INVALID_PIT_NUMBER);
         }
@@ -105,7 +66,7 @@ public interface KalahBoardInterface extends KalahErrorMessages {
      *
      * @return player number
      */
-    default int getOppositePlayer() {
+    public int getOppositePlayer() {
         return getCurrentPlayer() == 1 ? 2 : 1;
     }
 
@@ -115,7 +76,7 @@ public interface KalahBoardInterface extends KalahErrorMessages {
      * @param player player number
      * @return kalah pit number
      */
-    default int getPlayersKalahPit(int player) {
+    public int getPlayersKalahPit(int player) {
         return player == 1 ? MAX_PITS / 2 : MAX_PITS;
     }
 
@@ -126,7 +87,7 @@ public interface KalahBoardInterface extends KalahErrorMessages {
      * @param countKalah include Kalah home in total count
      * @return stones count
      */
-    default int countPlayerStones(int player, boolean countKalah) {
+    public int countPlayerStones(int player, boolean countKalah) {
         int stonesCount = 0;
         int firstPit = player == 1 ? 1 : MAX_STONES + 2;
         for (int i = firstPit; i < firstPit + MAX_STONES + (countKalah ? 1 : 0); i++) {
@@ -141,7 +102,7 @@ public interface KalahBoardInterface extends KalahErrorMessages {
      * @param pit pit number
      * @return opposite pit number
      */
-    default int getOppositeSidePitNumber(int pit) {
+    public int getOppositeSidePitNumber(int pit) {
         return MAX_PITS - pit;
     }
 
@@ -151,7 +112,7 @@ public interface KalahBoardInterface extends KalahErrorMessages {
      * @param pit pit number
      * @return result
      */
-    default boolean isPitMineKalah(int pit) {
+    public boolean isPitMineKalah(int pit) {
         return getCurrentPlayer() == 1 && pit == MAX_PITS / 2 || getCurrentPlayer() == 2 && pit == MAX_PITS;
     }
 
@@ -161,7 +122,7 @@ public interface KalahBoardInterface extends KalahErrorMessages {
      * @param pit pit number
      * @return result
      */
-    default boolean isPitKalah(int pit) {
+    public boolean isPitKalah(int pit) {
         return pit == MAX_PITS / 2 || pit == MAX_PITS;
     }
 
@@ -170,7 +131,7 @@ public interface KalahBoardInterface extends KalahErrorMessages {
      *
      * @return the current player
      */
-    default int changePlayer() {
+    public int changePlayer() {
         return setCurrentPlayer(getOppositePlayer());
     }
 
@@ -180,7 +141,7 @@ public interface KalahBoardInterface extends KalahErrorMessages {
      * @param pit pit number
      * @return the result of checking
      */
-    default boolean isPitMine(int pit) {
+    public boolean isPitMine(int pit) {
         if (getCurrentPlayer() == 1) {
             return pit >= 1 && pit < MAX_PITS / 2;
         }
@@ -189,10 +150,4 @@ public interface KalahBoardInterface extends KalahErrorMessages {
         }
     }
 
-    /**
-     * Returns the JSON Object of the current game board
-     *
-     * @return board JSON string representation
-     */
-    String toString();
 }
