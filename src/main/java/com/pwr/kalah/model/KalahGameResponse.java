@@ -1,12 +1,12 @@
 /*
  * Copyright (c) 2020 Volodymyr Protsaylo
- *                            
+ *
  *                               Licensed under the Apache License, Version 2.0 (the "License");
  *                               you may not use this file except in compliance with the License.
  *                               You may obtain a copy of the License at
- *                            
+ *
  *                                 http://www.apache.org/licenses/LICENSE-2.0
- *                            
+ *
  *                               Unless required by applicable law or agreed to in writing, software
  *                               distributed under the License is distributed on an "AS IS" BASIS,
  *                               WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,18 +16,39 @@
 
 package com.pwr.kalah.model;
 
-import com.pwr.kalah.controller.KalahGameController;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.pwr.kalah.view.KalahView;
 
-/**
- * This interface is a collection of error messages used both in {@link KalahGame} as well as in {@link KalahGameController} classes
- */
-public interface KalahErrorMessages {
-    String INVALID_GAME_NUMBER = "This game is not created yet";
-    String INVALID_PIT_NUMBER = "Invalid pit number. Valid numbers are from 1 to " + KalahBoard.MAX_PITS;
-    String NON_NUMERIC_VALUE = "Game id and pit number should be numeric and valid";
-    String YOU_CAN_NOT_PUT_LESS_THAN_0_STONES_IN_A_PIT = "You can not put less then 0 stones in a pit";
-    String INPUT_ARRAY_LENGTH_SIZE_IS_INVALID = "Input array length size is invalid";
-    String INVALID_MOVE = "Invalid move";
-    String GAME_OVER = "Game over! Score is %s:%s";
+import java.util.HashMap;
 
+public class KalahGameResponse {
+
+    @JsonView({KalahView.GameMove.class, KalahView.NewGame.class})
+    @JsonProperty("id")
+    Long id;
+
+    @JsonView({KalahView.GameMove.class, KalahView.NewGame.class})
+    @JsonProperty("url")
+    String url;
+
+    @JsonView({KalahView.GameMove.class})
+    @JsonProperty("status")
+    HashMap<Integer, Integer> status;
+
+    /**
+     * Empty parameters constructor used in integration tests for JSON deserialization
+     */
+    public KalahGameResponse() {
+    }
+
+    public KalahGameResponse(Long id, String url, HashMap<Integer, Integer> status) {
+        this.id = id;
+        this.url = url;
+        this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }

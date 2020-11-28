@@ -21,7 +21,7 @@ import com.pwr.kalah.exception.KalahGameException;
 /**
  * A game of 6-stone Kalah
  */
-public interface KalahGameInterface extends KalahErrorMessages {
+public interface KalahBoardInterface extends KalahErrorMessages {
     int MAX_PITS = 14;  // The sum of of all pits on the game field pits (including each player's pits and the two kalah pits)
     int MAX_STONES = 6; // The maximum stones in a pit number (pre-defined for a game of 6-stone Kalah)
 
@@ -63,19 +63,7 @@ public interface KalahGameInterface extends KalahErrorMessages {
      */
     int setCurrentPlayer(int currentPlayer);
 
-    /** Get game id
-     *
-     * @return game id
-     */
-    Long getGameId();
-
-    /** Get game URL
-     *
-     * @return game URL
-     */
-     String getGameUrl();
-
-    /**
+     /**
      * Put a number of stones stones in a pit
      *
      * @param pit    number of pit
