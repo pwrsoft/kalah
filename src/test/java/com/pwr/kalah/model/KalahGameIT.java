@@ -29,8 +29,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Objects;
 
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -119,6 +118,7 @@ public class KalahGameIT {
         mockMvc.perform(put("/games/" + gameId + "/pits/" + pit))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(String.valueOf(gameId))))
+                .andExpect(jsonPath("$.uri", startsWith("http://")))
                 .andExpect((jsonPath("$.status",
                         aMapWithSize(14))));
     }
