@@ -31,11 +31,10 @@ import java.util.Objects;
 
 import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.is;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,7 +59,7 @@ public class KalahGameIT {
     }
 
     @Test
-    @DisplayName("Should be able to Make some moves")
+    @DisplayName("Should be able to Make moves")
     public void shouldBeAbleToMakeMoves() throws Exception {
         // Create first game
         Long firstGameId = createOneGame();
@@ -133,9 +132,9 @@ public class KalahGameIT {
         try {
             MvcResult result = checkResultActionsNewGame()
                     .andReturn();
-            KalahGame game = new ObjectMapper()
-                    .readValue(result.getResponse().getContentAsString(), KalahGame.class);
-            return game.getGameId();
+            KalahGameResponse gameResponse = new ObjectMapper()
+                    .readValue(result.getResponse().getContentAsString(), KalahGameResponse.class);
+            return gameResponse.getId();
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid Request to Create Game", e);
         }
