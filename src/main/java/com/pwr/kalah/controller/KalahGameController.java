@@ -50,7 +50,7 @@ public class KalahGameController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<KalahGameResponse> createGame(HttpServletRequest request) {
         KalahGame newGame = gameService.createGame(request.getRequestURL().toString());
-        return ResponseEntity.created(URI.create(newGame.getGameUrl())).body(newGame.getResponse());
+        return ResponseEntity.created(URI.create(newGame.getGameUri())).body(newGame.getResponse());
     }
 
     @PutMapping(path = "/games/{gameId}/pits/{pitId}")

@@ -36,9 +36,9 @@ public class KalahGameService implements KalahGameServiceInterface {
     }
 
     @Override
-    public KalahGame createGame(String requestUrl) {
+    public KalahGame createGame(String requestUri) {
         Long newGameId = gamesCount.getAndIncrement();
-        KalahGame newGame = new KalahGame(newGameId, requestUrl + "/" + newGameId);
+        KalahGame newGame = new KalahGame(newGameId, requestUri + "/" + newGameId);
         games.put(newGameId, newGame);
         return newGame;
     }
