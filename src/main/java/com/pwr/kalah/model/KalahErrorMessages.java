@@ -22,6 +22,10 @@ import com.pwr.kalah.controller.KalahGameController;
  * This interface is a collection of error messages used both in {@link KalahGame} as well as in {@link KalahGameController} classes
  */
 public interface KalahErrorMessages {
+
+    int MAX_PITS = 14;  // The sum of of all pits on the game field pits (including each player's pits and the two kalah pits)
+    int MAX_STONES = 6; // The maximum stones in a pit number (pre-defined for a game of 6-stone Kalah)
+
     String INVALID_GAME_NUMBER = "This game is not created yet";
     String INVALID_PIT_NUMBER = "Invalid pit number. Valid numbers are from 1 to " + KalahBoard.MAX_PITS;
     String NON_NUMERIC_VALUE = "Game id and pit number should be numeric and valid";
@@ -29,5 +33,4 @@ public interface KalahErrorMessages {
     String INPUT_ARRAY_LENGTH_SIZE_IS_INVALID = "Input array length size is invalid";
     String INVALID_MOVE = "Invalid move";
     String GAME_OVER = "Game over! Score is %s:%s";
-
 }
