@@ -44,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @DisplayName("KalahGame Integration Tests")
 public class KalahGameIT {
+
     @Autowired
     private MockMvc mockMvc;
 

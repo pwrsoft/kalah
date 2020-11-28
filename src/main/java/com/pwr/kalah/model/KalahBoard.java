@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class KalahBoard implements KalahBoardInterface{
+public class KalahBoard extends Board implements KalahErrorMessages {
 
     private final Map<Integer, Integer> board = new ConcurrentHashMap<>();
 
