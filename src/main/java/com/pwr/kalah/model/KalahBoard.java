@@ -21,10 +21,12 @@ import com.pwr.kalah.exception.KalahGameException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class KalahBoard implements KalahBoardInterface{
 
     private final Map<Integer, Integer> board = new ConcurrentHashMap<>();
+
     private int currentPlayer; // The number of player who makes next move (1 or 2)
 
 
@@ -137,13 +139,9 @@ public class KalahBoard implements KalahBoardInterface{
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        for (int i = 1; i <= MAX_PITS; i++) {
-            sb.append(inQuotes(i)).append(':').append(inQuotes(getPitStones(i))).append(',');
-        }
-        sb.deleteCharAt(sb.length() - 1).append("}");
-        return sb.toString();
+        return "{"+board.entrySet().stream()
+                .map(e -> "\""+ e.getKey() + "\"" + ":\"" + e.getValue() + "\"")
+                .collect(Collectors.joining(","))+"}";
     }
 
     public HashMap<Integer, Integer> getStatus() {
