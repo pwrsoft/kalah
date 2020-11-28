@@ -195,16 +195,4 @@ public interface KalahBoardInterface extends KalahErrorMessages {
      * @return board JSON string representation
      */
     String toString();
-
-    /**
-     * Helper method for quoting given values
-     *
-     * @param value value to quote
-     * @return quoted value
-     */
-    @SuppressWarnings("StringBufferReplaceableByString")
-    default String inQuotes(int value) {
-        return new StringBuilder().append('"').append(value).append('"').toString();
-    }
-
 }
