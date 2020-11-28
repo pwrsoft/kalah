@@ -29,8 +29,8 @@ public class KalahGameResponse {
     Long id;
 
     @JsonView({KalahView.GameMove.class, KalahView.NewGame.class})
-    @JsonProperty("url")
-    String url;
+    @JsonProperty("uri")
+    String uri;
 
     @JsonView({KalahView.GameMove.class})
     @JsonProperty("status")
@@ -42,9 +42,9 @@ public class KalahGameResponse {
     public KalahGameResponse() {
     }
 
-    public KalahGameResponse(Long id, String url, HashMap<Integer, Integer> status) {
+    public KalahGameResponse(Long id, String uri, HashMap<Integer, Integer> status) {
         this.id = id;
-        this.url = url;
+        this.uri = uri;
         this.status = status;
     }
 

@@ -22,7 +22,7 @@ public class KalahGame {
 
     private final Long gameId;
 
-    private final String gameUrl;
+    private final String gameUri;
 
     private final KalahBoard board = new KalahBoard();
 
@@ -30,11 +30,11 @@ public class KalahGame {
      * Kalah game constructor
      *
      * @param gameId  game ID
-     * @param gameUrl game URL
+     * @param gameUri game URI
      */
-    public KalahGame(Long gameId, String gameUrl) {
+    public KalahGame(Long gameId, String gameUri) {
         this.gameId = gameId;
-        this.gameUrl = gameUrl;
+        this.gameUri = gameUri;
         board.initGameField();
     }
 
@@ -56,8 +56,8 @@ public class KalahGame {
         return board;
     }
 
-    public String getGameUrl() {
-        return gameUrl;
+    public String getGameUri() {
+        return gameUri;
     }
 
     public Long getGameId() {
@@ -65,6 +65,6 @@ public class KalahGame {
     }
 
     public KalahGameResponse getResponse() {
-        return new KalahGameResponse(gameId, gameUrl, board.getStatus());
+        return new KalahGameResponse(gameId, gameUri, board.getStatus());
     }
 }

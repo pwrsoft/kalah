@@ -20,7 +20,7 @@ import com.pwr.kalah.model.KalahGame;
 
 public interface KalahGameServiceInterface {
 
-    KalahGame createGame(String requestUrl);
+    KalahGame createGame(String requestUri);
 
     KalahGame makeMove(Long gameId, int pitId);
 }
