@@ -37,7 +37,7 @@ public class KalahGameResponse {
     HashMap<Integer, Integer> status;
 
     /**
-     * Empty parameters constructor used in integration tests for JSON deserialization
+     * This constructor is used in integration tests for JSON deserialization
      */
     public KalahGameResponse() {
     }
