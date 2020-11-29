@@ -29,12 +29,29 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
 
     private int currentPlayer; // The number of player who makes next move (1 or 2)
 
+    private int currentPit;
+
     public void makeNextMove(int pit) {
         validatePitNumber(pit);
 
         // The player who begins picks up all the stones in any of their own pits, and sows the stones on
         // to the right, one in each of the following pits, including his own Kalah
-        int currentPit = pit;
+        pickAndSowTheStones(pit);
+
+        // When the last stone lands in an own empty pit, the player captures this stone and all stones
+        // in the opposite pit (the other players' pit) and puts them in his own Kalah
+        captureStones();
+
+        // After finishing the current player's move
+        // if the players last stone lands in his own Kalah, he gets another turn
+        changePlayerOrMakeAnotherMove();
+
+        // The game is over as soon as one of the sides run out of stones.
+        checkEndOfGame();
+    }
+
+    private void pickAndSowTheStones(int pit) {
+        currentPit = pit;
         int availablePitStones = getPitStones(currentPit);
         if (availablePitStones == 0 || isPitKalah(pit) || !isPitMine(pit)) {
             throw new KalahGameException(INVALID_MOVE);
@@ -57,9 +74,9 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
             addPitStones(currentPit, 1);
             availablePitStones--;
         }
+    }
 
-        // When the last stone lands in an own empty pit, the player captures this stone and all stones
-        // in the opposite pit (the other players' pit) and puts them in his own Kalah
+    private void captureStones() {
         int oppositePitStones = 0;
         if (!isPitKalah(currentPit)) {
             oppositePitStones = getPitStones(getOppositeSidePitNumber(currentPit));
@@ -73,15 +90,16 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
             // put acquired stones in his own Kalah
             addPitStones(getPlayersKalahPit(getCurrentPlayer()), oppositePitStones + (isPitMineKalah(currentPit) ? 0 : 1));
         }
+    }
 
-        // After finishing the current player's move
-        // if the players last stone lands in his own Kalah, he gets another turn
+    private void changePlayerOrMakeAnotherMove() {
         if (!isPitMineKalah(currentPit)) {
             // otherwise change the current player
             changePlayer();
         }
+    }
 
-        // The game is over as soon as one of the sides run out of stones.
+    private void checkEndOfGame() {
         if (countPlayerStones(getCurrentPlayer(), false) == 0) {
 
             // The player who still has stones in his/her pits keeps
@@ -101,7 +119,6 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
                     getPitStones(getPlayersKalahPit(1)), getPitStones(getPlayersKalahPit(2)))
             );
         }
-
     }
 
     public void fillGameFieldWithSample(int[] sampleBoard) {

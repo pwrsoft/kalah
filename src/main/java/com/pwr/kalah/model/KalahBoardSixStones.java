@@ -23,8 +23,8 @@ import com.pwr.kalah.exception.KalahGameException;
  */
 abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
 
-    static final int MAX_PITS = 14;  // The sum of of all pits on the game field pits (including each player's pits and the two kalah pits)
-    static final int MAX_STONES = 6; // The maximum stones in a pit number (pre-defined for a game of 6-stone Kalah)
+    static final int MAX_STONES = 6;                 // The maximum stones in a pit number (pre-defined for a game of 6-stone Kalah)
+    static final int MAX_PITS = MAX_STONES * 2 + 2;  // The sum of of all pits on the game field pits (including each player's pits and the two kalah pits)
     static final String INVALID_PIT_NUMBER = "Invalid pit number. Valid numbers are from 1 to " + MAX_PITS;
 
     /**
@@ -39,8 +39,8 @@ abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
         // Empty two Kalah pits
         setPitStones(MAX_PITS / 2, 0);
         setPitStones(MAX_PITS, 0);
-        
-        // The first player makes the first move.
+
+        // The first player makes the first move
         setCurrentPlayer(1);
     }
 
