@@ -99,6 +99,14 @@ class KalahGameTest {
     }
 
     @Test
+    void testSecondPlayerMakesFirstMoveWithRepeat() {
+        board.makeNextMove(8);
+        assertEquals(Player.SECOND, board.getCurrentPlayer(), "The game starts with player number 2, no repeat rule");
+        board.makeNextMove(9);
+        assertEquals(Player.FIRST, board.getCurrentPlayer(), "The game starts with player number 2, no repeat rule");
+    }
+
+    @Test
     void testCaptureStones() {
         board.fillGameFieldWithSample(new int[]{0, 0, 0, 12, 0, 0, 0, 0, 0, 5, 3, 0, 0, 0});
         board.makeNextMove(4);

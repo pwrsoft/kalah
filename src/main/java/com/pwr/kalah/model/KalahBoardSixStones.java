@@ -27,9 +27,6 @@ abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
     static final int MAX_PITS = MAX_STONES * 2 + 2;  // The sum of of all pits on the game field pits (including each player's pits and the two kalah pits)
     static final String INVALID_PIT_NUMBER = "Invalid pit number. Valid numbers are from 1 to " + MAX_PITS;
 
-    /**
-     * Initialize Kalah game field before the first move
-     */
     public void initGameField() {
         // At the start of the game, six stones are put in each pit
         for (int i = 1; i <= MAX_PITS; i++) {
