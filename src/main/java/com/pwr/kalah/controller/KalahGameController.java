@@ -55,13 +55,12 @@ public class KalahGameController {
 
     @PutMapping(path = "/games/{gameId}/pits/{pitId}")
     @JsonView(KalahView.GameMove.class)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<KalahGameResponse> makeMove(
             @PathVariable @Digits(integer=19, fraction=0) @Min(1) @Max(Long.MAX_VALUE) Long gameId,
             @PathVariable @Digits(integer=2, fraction=0) @Min(1) @Max(14) int pitId) {
         KalahGame existingGame = gameService.makeMove(gameId, pitId);
         return ResponseEntity.ok(existingGame.getResponse());
     }
-
-
 
 }
