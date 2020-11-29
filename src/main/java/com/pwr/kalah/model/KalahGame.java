@@ -24,7 +24,7 @@ public class KalahGame {
 
     private final String gameUri;
 
-    private final KalahBoard board = new KalahBoard();
+    private final KalahBoard board;
 
     /**
      * Kalah game constructor
@@ -35,6 +35,7 @@ public class KalahGame {
     public KalahGame(Long gameId, String gameUri) {
         this.gameId = gameId;
         this.gameUri = gameUri;
+        board = new KalahBoardSixStonesImpl();
         board.initGameField();
     }
 
