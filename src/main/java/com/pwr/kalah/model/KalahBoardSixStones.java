@@ -19,9 +19,13 @@ package com.pwr.kalah.model;
 import com.pwr.kalah.exception.KalahGameException;
 
 /**
- * A game of 6-stone Kalah
+ * A game of 6-stone Kalah abstract class
  */
-abstract class Board implements BoardInterface, KalahErrorMessages {
+abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
+
+    static final int MAX_PITS = 14;  // The sum of of all pits on the game field pits (including each player's pits and the two kalah pits)
+    static final int MAX_STONES = 6; // The maximum stones in a pit number (pre-defined for a game of 6-stone Kalah)
+    static final String INVALID_PIT_NUMBER = "Invalid pit number. Valid numbers are from 1 to " + MAX_PITS;
 
     /**
      * Initialize Kalah game field before the first move
@@ -40,12 +44,6 @@ abstract class Board implements BoardInterface, KalahErrorMessages {
         setCurrentPlayer(1);
     }
 
-    /**
-     * Add number of stones to a pit
-     *
-     * @param pit    pit number
-     * @param stones number of stones to add
-     */
     public void addPitStones(int pit, int stones) {
         setPitStones(pit, getPitStones(pit) + stones);
     }
@@ -80,13 +78,6 @@ abstract class Board implements BoardInterface, KalahErrorMessages {
         return player == 1 ? MAX_PITS / 2 : MAX_PITS;
     }
 
-    /**
-     * Count stones which belongs to given player
-     *
-     * @param player     player
-     * @param countKalah include Kalah home in total count
-     * @return stones count
-     */
     public int countPlayerStones(int player, boolean countKalah) {
         int stonesCount = 0;
         int firstPit = player == 1 ? 1 : MAX_STONES + 2;
@@ -106,41 +97,18 @@ abstract class Board implements BoardInterface, KalahErrorMessages {
         return MAX_PITS - pit;
     }
 
-    /**
-     * Checks is given pit is Kalah and belongs to the current player
-     *
-     * @param pit pit number
-     * @return result
-     */
     public boolean isPitMineKalah(int pit) {
         return getCurrentPlayer() == 1 && pit == MAX_PITS / 2 || getCurrentPlayer() == 2 && pit == MAX_PITS;
     }
 
-    /**
-     * Checks is given is Kalah pit
-     *
-     * @param pit pit number
-     * @return result
-     */
     public boolean isPitKalah(int pit) {
         return pit == MAX_PITS / 2 || pit == MAX_PITS;
     }
 
-    /**
-     * Change the current player to the opposite
-     *
-     * @return the current player
-     */
     public int changePlayer() {
         return setCurrentPlayer(getOppositePlayer());
     }
 
-    /**
-     * Checks if the given pit is not Kalah and belongs the current player
-     *
-     * @param pit pit number
-     * @return the result of checking
-     */
     public boolean isPitMine(int pit) {
         if (getCurrentPlayer() == 1) {
             return pit >= 1 && pit < MAX_PITS / 2;

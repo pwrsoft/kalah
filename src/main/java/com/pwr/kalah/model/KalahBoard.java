@@ -16,135 +16,117 @@
 
 package com.pwr.kalah.model;
 
-import com.pwr.kalah.exception.KalahGameException;
-
 import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
-public class KalahBoard extends Board implements KalahErrorMessages {
+public interface KalahBoard {
 
-    private final Map<Integer, Integer> board = new ConcurrentHashMap<>();
+    /**
+     * Fill playing board with a sample values (used in unit tests only)
+     *
+     * @param sampleBoard values array
+     */
+    void fillGameFieldWithSample(int[] sampleBoard);
 
-    private int currentPlayer; // The number of player who makes next move (1 or 2)
+    /**
+     * Get current player
+     *
+     * @return current player
+     */
+    int getCurrentPlayer();
 
+    /**
+     * Set current player
+     *
+     * @param currentPlayer player to be set as current
+     */
+    int setCurrentPlayer(int currentPlayer);
 
-    public void makeNextMove(int pit) {
-        validatePitNumber(pit);
+    /**
+     * Put a number of stones stones in a pit
+     *
+     * @param pit    number of pit
+     * @param stones number of stones to put
+     */
+    void setPitStones(int pit, int stones);
 
-        // The player who begins picks up all the stones in any of their own pits, and sows the stones on
-        // to the right, one in each of the following pits, including his own Kalah
-        int currentPit = pit;
-        int availablePitStones = getPitStones(currentPit);
-        if (availablePitStones == 0 || isPitKalah(pit) || !isPitMine(pit)) {
-            throw new KalahGameException(INVALID_MOVE);
-        }
-        setPitStones(currentPit, 0);
-        while (availablePitStones > 0) {
+    /**
+     * Return number of stones in a pit
+     *
+     * @param pit pit number
+     * @return number of stones
+     */
+    int getPitStones(int pit);
 
-            // cycle through the pits
-            currentPit++;
-            if (currentPit > MAX_PITS) {
-                currentPit = 1;
-            }
+    /**
+     * Returns the JSON Object of the current game board
+     *
+     * @return board JSON string representation
+     */
+    String toString();
 
-            // skip another player's Kalah
-            if (currentPit == getPlayersKalahPit(getOppositePlayer())) {
-                continue;
-            }
+    /**
+     * Initializes a board before the first move according to the rules of the game
+     */
+    void initGameField();
 
-            // add the stones one by one
-            addPitStones(currentPit, 1);
-            availablePitStones--;
-        }
+    /**
+     * Make next move starting from the given pit number
+     *
+     * @param pit pit number
+     */
+    void makeNextMove(int pit);
 
-        // When the last stone lands in an own empty pit, the player captures this stone and all stones
-        // in the opposite pit (the other players' pit) and puts them in his own Kalah
-        int oppositePitStones = 0;
-        if (!isPitKalah(currentPit)) {
-            oppositePitStones = getPitStones(getOppositeSidePitNumber(currentPit));
-        }
-        if (isPitMine(currentPit) && !isPitMineKalah(currentPit) && getPitStones(currentPit) == 1 && oppositePitStones > 0) {
+    /**
+     * Returns HashMap of the board
+     * @return game board hashmap
+     */
+    HashMap<Integer, Integer> getStatus();
 
-            // acquire stones from the opposite pit plus mine one stone put before
-            setPitStones(getOppositeSidePitNumber(currentPit), 0);
-            setPitStones(currentPit, 0);
+    /**
+     * Change the current player to the opposite
+     *
+     * @return the current player
+     */
+    int changePlayer();
 
-            // put acquired stones in his own Kalah
-            addPitStones(getPlayersKalahPit(getCurrentPlayer()), oppositePitStones + (isPitMineKalah(currentPit) ? 0 : 1));
-        }
+    /**
+     * Checks if the given pit is not Kalah and belongs the current player
+     *
+     * @param pit pit number
+     * @return the result of checking
+     */
+    boolean isPitMine(int pit);
 
-        // After finishing the current player's move
-        // if the players last stone lands in his own Kalah, he gets another turn
-        if (!isPitMineKalah(currentPit)) {
-            // otherwise change the current player
-            changePlayer();
-        }
+    /**
+     * Checks is given pit is Kalah and belongs to the current player
+     *
+     * @param pit pit number
+     * @return result
+     */
+    boolean isPitMineKalah(int pit);
 
-        // The game is over as soon as one of the sides run out of stones.
-        if (countPlayerStones(getCurrentPlayer(), false) == 0) {
+    /**
+     * Checks is given is Kalah pit
+     *
+     * @param pit pit number
+     * @return result
+     */
+    boolean isPitKalah(int pit);
 
-            // The player who still has stones in his/her pits keeps
-            // them and puts them in his/hers Kalah.
-            int oppositePlayer = getOppositePlayer();
-            int oppositePlayerStones = countPlayerStones(oppositePlayer, false);
+    /**
+     * Add number of stones to a pit
+     *
+     * @param pit    pit number
+     * @param stones number of stones to add
+     */
+    void addPitStones(int pit, int stones);
 
-            // moving winner stones to his kalah
-            int firstPit = oppositePlayer == 1 ? 1 : MAX_STONES + 2;
-            for (int i = firstPit; i < firstPit + MAX_STONES; i++) {
-                setPitStones(i, 0);
-            }
-            addPitStones(getPlayersKalahPit(oppositePlayer), oppositePlayerStones);
-
-            // The winner of the game is the player who has the most stones in his Kalah.
-            throw new KalahGameException(String.format(GAME_OVER,
-                    getPitStones(getPlayersKalahPit(1)), getPitStones(getPlayersKalahPit(2)))
-            );
-        }
-
-    }
-
-    @Override
-    public int getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    @Override
-    public int setCurrentPlayer(int currentPlayer) {
-        this.currentPlayer = currentPlayer;
-        return currentPlayer;
-    }
-
-    public int getPitStones(int pit) {
-        validatePitNumber(pit);
-        return board.get(pit);
-    }
-
-    public void setPitStones(int pit, int stones) {
-        validatePitNumber(pit);
-        if (stones < 0) {
-            throw new KalahGameException(YOU_CAN_NOT_PUT_LESS_THAN_0_STONES_IN_A_PIT);
-        }
-        board.put(pit, stones);
-    }
-
-    public void fillGameFieldWithSample(int[] sampleBoard) {
-        if (sampleBoard.length < 1 || sampleBoard.length > MAX_PITS) {
-            throw new IllegalArgumentException(INPUT_ARRAY_LENGTH_SIZE_IS_INVALID);
-        }
-        for (int i = 0; i < sampleBoard.length; i++) {
-            board.put(i + 1, sampleBoard[i]);
-        }
-    }
-
-    public String toString() {
-        return "{"+board.entrySet().stream()
-                .map(e -> "\""+ e.getKey() + "\"" + ":\"" + e.getValue() + "\"")
-                .collect(Collectors.joining(","))+"}";
-    }
-
-    public HashMap<Integer, Integer> getStatus() {
-        return new HashMap<>(board);
-    }
+    /**
+     * Count stones which belongs to given player
+     *
+     * @param player     player
+     * @param countKalah include Kalah home in total count
+     * @return stones count
+     */
+    int countPlayerStones(int player, boolean countKalah);
 }

@@ -23,11 +23,8 @@ import com.pwr.kalah.controller.KalahGameController;
  */
 public interface KalahErrorMessages {
 
-    int MAX_PITS = 14;  // The sum of of all pits on the game field pits (including each player's pits and the two kalah pits)
-    int MAX_STONES = 6; // The maximum stones in a pit number (pre-defined for a game of 6-stone Kalah)
-
     String INVALID_GAME_NUMBER = "This game is not created yet";
-    String INVALID_PIT_NUMBER = "Invalid pit number. Valid numbers are from 1 to " + KalahBoard.MAX_PITS;
+    String INVALID_PIT_NUMBER = "Invalid pit number";
     String NON_NUMERIC_VALUE = "Game id and pit number should be numeric and valid";
     String YOU_CAN_NOT_PUT_LESS_THAN_0_STONES_IN_A_PIT = "You can not put less then 0 stones in a pit";
     String INPUT_ARRAY_LENGTH_SIZE_IS_INVALID = "Input array length size is invalid";
