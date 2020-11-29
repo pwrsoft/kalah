@@ -38,13 +38,13 @@ class KalahGameTest {
 
     @Test
     void testGameFirstPlayer() {
-        assertEquals(1, board.getCurrentPlayer(), "The game starts with player number 1");
+        assertEquals(Player.FIRST, board.getCurrentPlayer(), "The game starts with player number 1");
     }
 
     @Test
     void testChangingPlayers() {
-        assertEquals(2, board.changePlayer(), "When game starts and after the first move the player number should be 2 ");
-        assertEquals(1, board.changePlayer(), "After the next move the player number should be 1 again ");
+        assertEquals(Player.SECOND, board.changePlayer(), "When game starts and after the first move the player number should be 2 ");
+        assertEquals(Player.FIRST, board.changePlayer(), "After the next move the player number should be 1 again ");
     }
 
     @Test
@@ -54,26 +54,26 @@ class KalahGameTest {
 
     @Test
     void testSetAndGetCurrentPlayer() {
-        board.setCurrentPlayer(1);
-        assertEquals(1, board.getCurrentPlayer(), "Current player should be 1");
-        board.setCurrentPlayer(2);
-        assertEquals(2, board.getCurrentPlayer(), "Current player should be 2");
+        board.setCurrentPlayer(Player.FIRST);
+        assertEquals(Player.FIRST, board.getCurrentPlayer(), "Current player should be 1");
+        board.setCurrentPlayer(Player.SECOND);
+        assertEquals(Player.SECOND, board.getCurrentPlayer(), "Current player should be 2");
     }
 
     @Test
     void testThePitBelongsTheCurrentPlayer() {
-        board.setCurrentPlayer(1);
+        board.setCurrentPlayer(Player.FIRST);
         assertTrue(board.isPitMine(1), "Pit 1 owner is invalid");
-        board.setCurrentPlayer(2);
+        board.setCurrentPlayer(Player.SECOND);
         assertTrue(board.isPitMine(8), "Pit 8 owner is invalid");
     }
 
     @Test
     void testKalahPits() {
-        board.setCurrentPlayer(1);
+        board.setCurrentPlayer(Player.FIRST);
         assertTrue(board.isPitMineKalah(7), "Pit 7 is Kalah of player 1");
         assertTrue(board.isPitKalah(7), "Pit 7 is Kalah");
-        board.setCurrentPlayer(2);
+        board.setCurrentPlayer(Player.SECOND);
         assertTrue(board.isPitMineKalah(14), "Pit 14 is Kalah of player 2");
         assertTrue(board.isPitKalah(14), "Pit 14 is Kalah");
     }
@@ -111,20 +111,21 @@ class KalahGameTest {
         board.fillGameFieldWithSample(new int[]{0, 0, 1, 3, 2, 0, 0, 0, 0, 5, 3, 0, 0, 0});
         board.makeNextMove(5);
         assertEquals("{\"1\":\"0\",\"2\":\"0\",\"3\":\"1\",\"4\":\"3\",\"5\":\"0\",\"6\":\"1\",\"7\":\"1\",\"8\":\"0\",\"9\":\"0\",\"10\":\"5\",\"11\":\"3\",\"12\":\"0\",\"13\":\"0\",\"14\":\"0\"}", board.toString(), "Invalid game field after step 2");
-        assertEquals(1, board.getCurrentPlayer(), "Player 1 should have another turn");
+        assertEquals(Player.FIRST, board.getCurrentPlayer(), "Player 1 should have another turn");
         board.makeNextMove(4);
         assertEquals("{\"1\":\"0\",\"2\":\"0\",\"3\":\"1\",\"4\":\"0\",\"5\":\"1\",\"6\":\"2\",\"7\":\"2\",\"8\":\"0\",\"9\":\"0\",\"10\":\"5\",\"11\":\"3\",\"12\":\"0\",\"13\":\"0\",\"14\":\"0\"}", board.toString(), "Invalid game field after step 2");
-        assertEquals(1, board.getCurrentPlayer(), "Player 1 should have another turn again");
+        assertEquals(Player.FIRST, board.getCurrentPlayer(), "Player 1 should have another turn again");
         board.makeNextMove(3);
         assertEquals("{\"1\":\"0\",\"2\":\"0\",\"3\":\"0\",\"4\":\"0\",\"5\":\"1\",\"6\":\"2\",\"7\":\"8\",\"8\":\"0\",\"9\":\"0\",\"10\":\"0\",\"11\":\"3\",\"12\":\"0\",\"13\":\"0\",\"14\":\"0\"}", board.toString(), "Invalid game field after step 2");
-        assertEquals(2, board.getCurrentPlayer(), "Now it's turn for Player 2");
+        assertEquals(Player.SECOND, board.getCurrentPlayer(), "Now it's turn for Player 2");
     }
 
     @Test
     void testCountPlayersStones() {
         board.makeNextMove(1);
-        assertEquals(35, board.countPlayerStones(1, false), "Counting pit stones of player 1");
-        assertEquals(36, board.countPlayerStones(1, true), "Counting all stones of player 1");
+        assertEquals(35, board.countPlayerStones(Player.FIRST, false), "Counting pit stones of player 1");
+        assertEquals(36, board.countPlayerStones(Player.FIRST, true), "Counting all stones of player 1");
+        assertEquals(36, board.countPlayerStones(Player.SECOND, true), "Counting all stones of player 2");
 
     }
 }

@@ -41,7 +41,7 @@ abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
         setPitStones(MAX_PITS, 0);
 
         // The first player makes the first move
-        setCurrentPlayer(1);
+        setCurrentPlayer(Player.FIRST);
     }
 
     public void addPitStones(int pit, int stones) {
@@ -64,8 +64,8 @@ abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
      *
      * @return player number
      */
-    public int getOppositePlayer() {
-        return getCurrentPlayer() == 1 ? 2 : 1;
+    public Player getOppositePlayer() {
+        return getCurrentPlayer() == Player.FIRST ? Player.SECOND : Player.FIRST;
     }
 
     /**
@@ -74,13 +74,13 @@ abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
      * @param player player number
      * @return kalah pit number
      */
-    public int getPlayersKalahPit(int player) {
-        return player == 1 ? MAX_PITS / 2 : MAX_PITS;
+    public int getPlayersKalahPit(Player player) {
+        return player == Player.FIRST ? MAX_PITS / 2 : MAX_PITS;
     }
 
-    public int countPlayerStones(int player, boolean countKalah) {
+    public int countPlayerStones(Player player, boolean countKalah) {
         int stonesCount = 0;
-        int firstPit = player == 1 ? 1 : MAX_STONES + 2;
+        int firstPit = player == Player.FIRST ? 1 : MAX_STONES + 2;
         for (int i = firstPit; i < firstPit + MAX_STONES + (countKalah ? 1 : 0); i++) {
             stonesCount += getPitStones(i);
         }
@@ -98,19 +98,19 @@ abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
     }
 
     public boolean isPitMineKalah(int pit) {
-        return getCurrentPlayer() == 1 && pit == MAX_PITS / 2 || getCurrentPlayer() == 2 && pit == MAX_PITS;
+        return getCurrentPlayer() == Player.FIRST && pit == MAX_PITS / 2 || getCurrentPlayer() == Player.SECOND && pit == MAX_PITS;
     }
 
     public boolean isPitKalah(int pit) {
         return pit == MAX_PITS / 2 || pit == MAX_PITS;
     }
 
-    public int changePlayer() {
+    public Player changePlayer() {
         return setCurrentPlayer(getOppositePlayer());
     }
 
     public boolean isPitMine(int pit) {
-        if (getCurrentPlayer() == 1) {
+        if (getCurrentPlayer() == Player.FIRST) {
             return pit >= 1 && pit < MAX_PITS / 2;
         }
         else {

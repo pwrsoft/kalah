@@ -32,14 +32,14 @@ public interface KalahBoard {
      *
      * @return current player
      */
-    int getCurrentPlayer();
+    Player getCurrentPlayer();
 
     /**
      * Set current player
      *
      * @param currentPlayer player to be set as current
      */
-    int setCurrentPlayer(int currentPlayer);
+    Player setCurrentPlayer(Player currentPlayer);
 
     /**
      * Put a number of stones stones in a pit
@@ -87,7 +87,7 @@ public interface KalahBoard {
      *
      * @return the current player
      */
-    int changePlayer();
+    Player changePlayer();
 
     /**
      * Checks if the given pit is not Kalah and belongs the current player
@@ -128,5 +128,5 @@ public interface KalahBoard {
      * @param countKalah include Kalah home in total count
      * @return stones count
      */
-    int countPlayerStones(int player, boolean countKalah);
+    int countPlayerStones(Player player, boolean countKalah);
 }

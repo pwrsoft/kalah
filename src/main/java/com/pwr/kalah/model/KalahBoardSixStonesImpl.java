@@ -26,8 +26,7 @@ import java.util.stream.Collectors;
 public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements KalahErrorMessages {
 
     private final Map<Integer, Integer> board = new ConcurrentHashMap<>();
-
-    private int currentPlayer; // The number of player who makes next move (1 or 2)
+    private Player currentPlayer;
 
     private int currentPit;
 
@@ -104,11 +103,11 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
 
             // The player who still has stones in his/her pits keeps
             // them and puts them in his/hers Kalah.
-            int oppositePlayer = getOppositePlayer();
+            Player oppositePlayer = getOppositePlayer();
             int oppositePlayerStones = countPlayerStones(oppositePlayer, false);
 
             // moving winner stones to his kalah
-            int firstPit = oppositePlayer == 1 ? 1 : MAX_STONES + 2;
+            int firstPit = oppositePlayer == Player.FIRST ? 1 : MAX_STONES + 2;
             for (int i = firstPit; i < firstPit + MAX_STONES; i++) {
                 setPitStones(i, 0);
             }
@@ -116,7 +115,7 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
 
             // The winner of the game is the player who has the most stones in his Kalah.
             throw new KalahGameException(String.format(GAME_OVER,
-                    getPitStones(getPlayersKalahPit(1)), getPitStones(getPlayersKalahPit(2)))
+                    getPitStones(getPlayersKalahPit(Player.FIRST)), getPitStones(getPlayersKalahPit(Player.SECOND)))
             );
         }
     }
@@ -130,11 +129,11 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
         }
     }
 
-    public int getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public int setCurrentPlayer(int currentPlayer) {
+    public Player setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
         return currentPlayer;
     }
