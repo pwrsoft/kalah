@@ -49,7 +49,7 @@ class KalahErrorMessagesTest {
         assertEquals(String.format(KalahErrorMessages.GAME_OVER, 20, 10), exception.getMessage());
 
         // New game, test repetitive move
-        board.setCurrentPlayer(1);
+        board.setCurrentPlayer(Player.FIRST);
         board.fillGameFieldWithSample(new int[]{0, 0, 0, 0, 0, 1, 19, 0, 0, 0, 0, 0, 0, 10});
         exception = assertThrows(
                 KalahGameException.class,
@@ -58,7 +58,7 @@ class KalahErrorMessagesTest {
 
         // New game, make first player's move
         // test second player move
-        board.setCurrentPlayer(2);
+        board.setCurrentPlayer(Player.SECOND);
         board.fillGameFieldWithSample(new int[]{0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 1, 9});
         exception = assertThrows(
                 KalahGameException.class,
