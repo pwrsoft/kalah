@@ -16,44 +16,11 @@
 
 package com.pwr.kalah.service;
 
-import com.pwr.kalah.exception.KalahGameException;
-import com.pwr.kalah.model.KalahErrorMessages;
 import com.pwr.kalah.model.KalahGame;
-import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+public interface KalahGameService {
 
-@Service
-public class KalahGameService implements KalahGameServiceInterface {
+    KalahGame createGame(String requestUri);
 
-    private final Map<Long, KalahGame> games = new HashMap<>();
-    private final AtomicLong gamesCount = new AtomicLong();
-
-    public KalahGameService() {
-        gamesCount.set(1L);
-    }
-
-    @Override
-    public KalahGame createGame(String requestUri) {
-        Long newGameId = gamesCount.getAndIncrement();
-        KalahGame newGame = new KalahGame(newGameId, requestUri + "/" + newGameId);
-        games.put(newGameId, newGame);
-        return newGame;
-    }
-
-    @Override
-    public KalahGame makeMove(Long gameId, int pitId) {
-        validateGameNumber(gameId);
-        KalahGame game = games.get(gameId);
-        game.makeNextMove(pitId);
-        return game;
-    }
-
-    private void validateGameNumber(Long pit) {
-        if (!games.containsKey(pit)) {
-            throw new KalahGameException(KalahErrorMessages.INVALID_GAME_NUMBER);
-        }
-    }
+    KalahGame makeMove(Long gameId, int pitId);
 }
