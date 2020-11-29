@@ -23,9 +23,9 @@ cd kalah
 
 ## Usage
 
-* Run tests
+* Build project:
 ```bash
-mvn test
+mvn clean install
 ```
 
 * Run web application:
