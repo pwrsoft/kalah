@@ -21,10 +21,12 @@ import com.pwr.kalah.model.KalahGame;
 import com.pwr.kalah.model.KalahGameResponse;
 import com.pwr.kalah.service.KalahGameService;
 import com.pwr.kalah.view.KalahView;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Digits;
@@ -47,7 +49,6 @@ public class KalahGameController {
 
     @PostMapping(path = "/games")
     @JsonView(KalahView.NewGame.class)
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<KalahGameResponse> createGame(HttpServletRequest request) {
         KalahGame newGame = gameService.createGame(request.getRequestURL().toString());
         return ResponseEntity.created(URI.create(newGame.getGameUri())).body(newGame.getResponse());
@@ -55,7 +56,6 @@ public class KalahGameController {
 
     @PutMapping(path = "/games/{gameId}/pits/{pitId}")
     @JsonView(KalahView.GameMove.class)
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<KalahGameResponse> makeMove(
             @PathVariable @Digits(integer=19, fraction=0) @Min(1) @Max(Long.MAX_VALUE) Long gameId,
             @PathVariable @Digits(integer=2, fraction=0) @Min(1) @Max(14) int pitId) {
