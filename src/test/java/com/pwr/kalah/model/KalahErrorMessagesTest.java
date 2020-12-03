@@ -80,7 +80,7 @@ class KalahErrorMessagesTest {
         Exception exception = assertThrows(
                 KalahGameException.class,
                 () -> board.setPitStones(0, 1));
-        assertEquals(KalahBoardSixStones.INVALID_PIT_NUMBER, exception.getMessage());
+        assertEquals(KalahErrorMessages.INVALID_PIT_NUMBER, exception.getMessage());
     }
 
     @Test
