@@ -35,7 +35,7 @@ public class KalahGame {
     public KalahGame(Long gameId, String gameUri) {
         this.gameId = gameId;
         this.gameUri = gameUri;
-        board = new KalahBoardSixStonesImpl();
+        board = new KalahBoardAbstractImpl();
         board.initGameField();
     }
 

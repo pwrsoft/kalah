@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements KalahErrorMessages {
+public class KalahBoardAbstractImpl extends KalahBoardAbstract implements KalahErrorMessages {
 
     private final Map<Integer, Integer> board = new ConcurrentHashMap<>();
     private Player currentPlayer;
@@ -31,6 +31,10 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
     private BoardStatus boardStatus = BoardStatus.INITIAL;
 
     private int currentPit;
+
+    public KalahBoardAbstractImpl() {
+        super(6);
+    }
 
     public void makeNextMove(int pit) {
         if (boardStatus == BoardStatus.FINISHED) {
@@ -59,7 +63,7 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
 
     private void defineCurrentPlayer(int pit) {
         if (boardStatus == BoardStatus.INITIAL) {
-            if (pit > MAX_PITS / 2) {
+            if (pit > maxPits / 2) {
                 setCurrentPlayer(Player.SECOND);
             }
             boardStatus = BoardStatus.STARTED;
@@ -77,7 +81,7 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
 
             // cycle through the pits
             currentPit++;
-            if (currentPit > MAX_PITS) {
+            if (currentPit > maxPits) {
                 currentPit = 1;
             }
 
@@ -124,8 +128,8 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
             int oppositePlayerStones = countPlayerStones(oppositePlayer, false);
 
             // moving winner stones to his kalah
-            int firstPit = oppositePlayer == Player.FIRST ? 1 : MAX_STONES + 2;
-            for (int i = firstPit; i < firstPit + MAX_STONES; i++) {
+            int firstPit = oppositePlayer == Player.FIRST ? 1 : maxStones + 2;
+            for (int i = firstPit; i < firstPit + maxStones; i++) {
                 setPitStones(i, 0);
             }
             addPitStones(getPlayersKalahPit(oppositePlayer), oppositePlayerStones);
@@ -144,7 +148,7 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
 
     public void fillGameFieldWithSample(int[] sampleBoard) {
         boardStatus = BoardStatus.INITIAL;
-        if (sampleBoard.length < 1 || sampleBoard.length > MAX_PITS) {
+        if (sampleBoard.length < 1 || sampleBoard.length > maxPits) {
             throw new IllegalArgumentException(INPUT_ARRAY_LENGTH_SIZE_IS_INVALID);
         }
         for (int i = 0; i < sampleBoard.length; i++) {

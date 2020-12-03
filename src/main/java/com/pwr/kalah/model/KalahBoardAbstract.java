@@ -21,21 +21,25 @@ import com.pwr.kalah.exception.KalahGameException;
 /**
  * A game of 6-stone Kalah abstract class
  */
-abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
+abstract class KalahBoardAbstract implements KalahBoard, KalahErrorMessages {
 
-    static final int MAX_STONES = 6;                 // The maximum stones in a pit number (pre-defined for a game of 6-stone Kalah)
-    static final int MAX_PITS = MAX_STONES * 2 + 2;  // The sum of of all pits on the game field pits (including each player's pits and the two kalah pits)
-    static final String INVALID_PIT_NUMBER = "Invalid pit number. Valid numbers are from 1 to " + MAX_PITS;
+    protected int maxStones; // The maximum stones in a pit number (pre-defined for a game of 6-stone Kalah)
+    protected int maxPits;   // The sum of of all pits on the game field pits (including each player's pits and the two kalah pits)
+
+    public KalahBoardAbstract(int maxStones) {
+        this.maxStones = maxStones;
+        this.maxPits = this.maxStones * 2 + 2;
+    }
 
     public void initGameField() {
         // At the start of the game, six stones are put in each pit
-        for (int i = 1; i <= MAX_PITS; i++) {
-            setPitStones(i, MAX_STONES);
+        for (int i = 1; i <= maxPits; i++) {
+            setPitStones(i, maxStones);
         }
 
         // Empty two Kalah pits
-        setPitStones(MAX_PITS / 2, 0);
-        setPitStones(MAX_PITS, 0);
+        setPitStones(maxPits / 2, 0);
+        setPitStones(maxPits, 0);
 
         // The first player makes the first move
         setCurrentPlayer(Player.FIRST);
@@ -51,7 +55,7 @@ abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
      * @param pit pit number
      */
     public void validatePitNumber(int pit) {
-        if (pit < 1 || pit > MAX_PITS) {
+        if (pit < 1 || pit > maxPits) {
             throw new KalahGameException(INVALID_PIT_NUMBER);
         }
     }
@@ -72,13 +76,13 @@ abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
      * @return kalah pit number
      */
     public int getPlayersKalahPit(Player player) {
-        return player == Player.FIRST ? MAX_PITS / 2 : MAX_PITS;
+        return player == Player.FIRST ? maxPits / 2 : maxPits;
     }
 
     public int countPlayerStones(Player player, boolean countKalah) {
         int stonesCount = 0;
-        int firstPit = player == Player.FIRST ? 1 : MAX_STONES + 2;
-        for (int i = firstPit; i < firstPit + MAX_STONES + (countKalah ? 1 : 0); i++) {
+        int firstPit = player == Player.FIRST ? 1 : maxStones + 2;
+        for (int i = firstPit; i < firstPit + maxStones + (countKalah ? 1 : 0); i++) {
             stonesCount += getPitStones(i);
         }
         return stonesCount;
@@ -91,15 +95,15 @@ abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
      * @return opposite pit number
      */
     public int getOppositeSidePitNumber(int pit) {
-        return MAX_PITS - pit;
+        return maxPits - pit;
     }
 
     public boolean isPitMineKalah(int pit) {
-        return getCurrentPlayer() == Player.FIRST && pit == MAX_PITS / 2 || getCurrentPlayer() == Player.SECOND && pit == MAX_PITS;
+        return getCurrentPlayer() == Player.FIRST && pit == maxPits / 2 || getCurrentPlayer() == Player.SECOND && pit == maxPits;
     }
 
     public boolean isPitKalah(int pit) {
-        return pit == MAX_PITS / 2 || pit == MAX_PITS;
+        return pit == maxPits / 2 || pit == maxPits;
     }
 
     public Player changePlayer() {
@@ -108,10 +112,10 @@ abstract class KalahBoardSixStones implements KalahBoard, KalahErrorMessages {
 
     public boolean isPitMine(int pit) {
         if (getCurrentPlayer() == Player.FIRST) {
-            return pit >= 1 && pit < MAX_PITS / 2;
+            return pit >= 1 && pit < maxPits / 2;
         }
         else {
-            return pit > MAX_PITS / 2 && pit < MAX_PITS;
+            return pit > maxPits / 2 && pit < maxPits;
         }
     }
 
