@@ -90,3 +90,6 @@ Response:
 
 ## License
 [APACHE LICENSE, VERSION 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+![Code Quality Score](https://www.code-inspector.com/project/27973/score/svg)
+![Code Grade](https://www.code-inspector.com/project/27973/status/svg)
