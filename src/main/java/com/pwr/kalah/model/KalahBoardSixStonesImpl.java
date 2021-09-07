@@ -23,7 +23,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements KalahErrorMessages {
+import static com.pwr.kalah.model.KalahErrorMessages.*;
+
+public class KalahBoardSixStonesImpl extends KalahBoardSixStones {
 
     private final Map<Integer, Integer> board = new ConcurrentHashMap<>();
     private Player currentPlayer;
@@ -104,7 +106,8 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
             setPitStones(currentPit, 0);
 
             // put acquired stones in his own Kalah
-            addPitStones(getPlayersKalahPit(getCurrentPlayer()), oppositePitStones + (isPitMineKalah(currentPit) ? 0 : 1));
+            addPitStones(getPlayersKalahPit(getCurrentPlayer()), oppositePitStones + (isPitMineKalah(currentPit) ? 0
+                    : 1));
         }
     }
 
@@ -137,8 +140,8 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
     }
 
     private void returnGameOver() {
-        throw new KalahGameException(String.format(GAME_OVER,
-                getPitStones(getPlayersKalahPit(Player.FIRST)), getPitStones(getPlayersKalahPit(Player.SECOND)))
+        throw new KalahGameException(String.format(GAME_OVER, getPitStones(getPlayersKalahPit(Player.FIRST)),
+                getPitStones(getPlayersKalahPit(Player.SECOND)))
         );
     }
 
@@ -187,9 +190,9 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
     }
 
     public String toString() {
-        return "{"+board.entrySet().stream()
-                .map(e -> "\""+ e.getKey() + "\"" + ":\"" + e.getValue() + "\"")
-                .collect(Collectors.joining(","))+"}";
+        return "{" + board.entrySet().stream()
+                .map(e -> "\"" + e.getKey() + "\"" + ":\"" + e.getValue() + "\"")
+                .collect(Collectors.joining(",")) + "}";
     }
 
 }
