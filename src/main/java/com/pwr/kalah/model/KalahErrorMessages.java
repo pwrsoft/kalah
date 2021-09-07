@@ -24,14 +24,14 @@ import com.pwr.kalah.controller.KalahGameController;
  */
 public final class KalahErrorMessages {
 
-    private KalahErrorMessages() {
-        throw new IllegalStateException("Utility class");
-    }
-
     public static final String INVALID_GAME_NUMBER = "This game is not created yet";
     public static final String NON_NUMERIC_VALUE = "Game id and pit number should be numeric and valid";
     public static final String YOU_CAN_NOT_PUT_LESS_THAN_0_STONES_IN_A_PIT = "You can not put less then 0 stones in a pit";
     public static final String INPUT_ARRAY_LENGTH_SIZE_IS_INVALID = "Input array length size is invalid";
     public static final String INVALID_MOVE = "Invalid move";
     public static final String GAME_OVER = "Game over! Score is %s:%s";
+
+    private KalahErrorMessages() {
+        throw new IllegalStateException("Utility class");
+    }
 }
