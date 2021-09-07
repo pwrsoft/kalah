@@ -190,9 +190,7 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones {
     }
 
     public String toString() {
-        return "{" + board.entrySet().stream()
-                .map(e -> "\"" + e.getKey() + "\"" + ":\"" + e.getValue() + "\"")
-                .collect(Collectors.joining(",")) + "}";
+        return board.toString();
     }
 
 }

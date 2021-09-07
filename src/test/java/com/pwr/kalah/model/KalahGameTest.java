@@ -49,7 +49,7 @@ class KalahGameTest {
 
     @Test
     void testInitGameField() {
-        assertEquals("{\"1\":\"6\",\"2\":\"6\",\"3\":\"6\",\"4\":\"6\",\"5\":\"6\",\"6\":\"6\",\"7\":\"0\",\"8\":\"6\",\"9\":\"6\",\"10\":\"6\",\"11\":\"6\",\"12\":\"6\",\"13\":\"6\",\"14\":\"0\"}", board.toString(), "Invalid initial game field");
+        assertEquals("{1=6, 2=6, 3=6, 4=6, 5=6, 6=6, 7=0, 8=6, 9=6, 10=6, 11=6, 12=6, 13=6, 14=0}", board.toString(), "Invalid initial game field");
     }
 
     @Test
@@ -93,9 +93,9 @@ class KalahGameTest {
     @Test
     void testSimpleGame() {
         board.makeNextMove(2);
-        assertEquals("{\"1\":\"6\",\"2\":\"0\",\"3\":\"7\",\"4\":\"7\",\"5\":\"7\",\"6\":\"7\",\"7\":\"1\",\"8\":\"7\",\"9\":\"6\",\"10\":\"6\",\"11\":\"6\",\"12\":\"6\",\"13\":\"6\",\"14\":\"0\"}", board.toString(), "Invalid game field after step 1");
+        assertEquals("{1=6, 2=0, 3=7, 4=7, 5=7, 6=7, 7=1, 8=7, 9=6, 10=6, 11=6, 12=6, 13=6, 14=0}", board.toString(), "Invalid game field after step 1");
         board.makeNextMove(10);
-        assertEquals("{\"1\":\"7\",\"2\":\"1\",\"3\":\"7\",\"4\":\"7\",\"5\":\"7\",\"6\":\"7\",\"7\":\"1\",\"8\":\"7\",\"9\":\"6\",\"10\":\"0\",\"11\":\"7\",\"12\":\"7\",\"13\":\"7\",\"14\":\"1\"}", board.toString(), "Invalid game field after step 2");
+        assertEquals("{1=7, 2=1, 3=7, 4=7, 5=7, 6=7, 7=1, 8=7, 9=6, 10=0, 11=7, 12=7, 13=7, 14=1}", board.toString(), "Invalid game field after step 2");
     }
 
     @Test
@@ -110,7 +110,7 @@ class KalahGameTest {
     void testCaptureStones() {
         board.fillGameFieldWithSample(new int[]{0, 0, 0, 12, 0, 0, 0, 0, 0, 5, 3, 0, 0, 0});
         board.makeNextMove(4);
-        assertEquals("{\"1\":\"1\",\"2\":\"1\",\"3\":\"0\",\"4\":\"0\",\"5\":\"1\",\"6\":\"1\",\"7\":\"6\",\"8\":\"1\",\"9\":\"1\",\"10\":\"6\",\"11\":\"0\",\"12\":\"1\",\"13\":\"1\",\"14\":\"0\"}", board.toString(), "Invalid game field after step 2");
+        assertEquals("{1=1, 2=1, 3=0, 4=0, 5=1, 6=1, 7=6, 8=1, 9=1, 10=6, 11=0, 12=1, 13=1, 14=0}", board.toString(), "Invalid game field after step 2");
 
     }
 
@@ -118,13 +118,13 @@ class KalahGameTest {
     void testPlayersSequentialMoves() {
         board.fillGameFieldWithSample(new int[]{0, 0, 1, 3, 2, 0, 0, 0, 0, 5, 3, 0, 0, 0});
         board.makeNextMove(5);
-        assertEquals("{\"1\":\"0\",\"2\":\"0\",\"3\":\"1\",\"4\":\"3\",\"5\":\"0\",\"6\":\"1\",\"7\":\"1\",\"8\":\"0\",\"9\":\"0\",\"10\":\"5\",\"11\":\"3\",\"12\":\"0\",\"13\":\"0\",\"14\":\"0\"}", board.toString(), "Invalid game field after step 2");
+        assertEquals("{1=0, 2=0, 3=1, 4=3, 5=0, 6=1, 7=1, 8=0, 9=0, 10=5, 11=3, 12=0, 13=0, 14=0}", board.toString(), "Invalid game field after step 2");
         assertEquals(Player.FIRST, board.getCurrentPlayer(), "Player 1 should have another turn");
         board.makeNextMove(4);
-        assertEquals("{\"1\":\"0\",\"2\":\"0\",\"3\":\"1\",\"4\":\"0\",\"5\":\"1\",\"6\":\"2\",\"7\":\"2\",\"8\":\"0\",\"9\":\"0\",\"10\":\"5\",\"11\":\"3\",\"12\":\"0\",\"13\":\"0\",\"14\":\"0\"}", board.toString(), "Invalid game field after step 2");
+        assertEquals("{1=0, 2=0, 3=1, 4=0, 5=1, 6=2, 7=2, 8=0, 9=0, 10=5, 11=3, 12=0, 13=0, 14=0}", board.toString(), "Invalid game field after step 2");
         assertEquals(Player.FIRST, board.getCurrentPlayer(), "Player 1 should have another turn again");
         board.makeNextMove(3);
-        assertEquals("{\"1\":\"0\",\"2\":\"0\",\"3\":\"0\",\"4\":\"0\",\"5\":\"1\",\"6\":\"2\",\"7\":\"8\",\"8\":\"0\",\"9\":\"0\",\"10\":\"0\",\"11\":\"3\",\"12\":\"0\",\"13\":\"0\",\"14\":\"0\"}", board.toString(), "Invalid game field after step 2");
+        assertEquals("{1=0, 2=0, 3=0, 4=0, 5=1, 6=2, 7=8, 8=0, 9=0, 10=0, 11=3, 12=0, 13=0, 14=0}", board.toString(), "Invalid game field after step 2");
         assertEquals(Player.SECOND, board.getCurrentPlayer(), "Now it's turn for Player 2");
     }
 
