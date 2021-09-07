@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pwr.kalah.view.KalahView;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class KalahGameResponse {
 
@@ -34,7 +34,7 @@ public class KalahGameResponse {
 
     @JsonView({KalahView.GameMove.class})
     @JsonProperty("status")
-    HashMap<Integer, Integer> status;
+    Map<Integer, Integer> status;
 
     /**
      * This constructor is used in integration tests for JSON deserialization
@@ -42,7 +42,7 @@ public class KalahGameResponse {
     public KalahGameResponse() {
     }
 
-    public KalahGameResponse(Long id, String uri, HashMap<Integer, Integer> status) {
+    public KalahGameResponse(Long id, String uri, Map<Integer, Integer> status) {
         this.id = id;
         this.uri = uri;
         this.status = status;
