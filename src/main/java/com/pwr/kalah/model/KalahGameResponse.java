@@ -36,10 +36,9 @@ public class KalahGameResponse {
     @JsonProperty("status")
     Map<Integer, Integer> status;
 
-    /**
-     * This constructor is used in integration tests for JSON deserialization
-     */
     public KalahGameResponse() {
+        // This constructor is intentionally empty.
+        // It is used in integration tests for JSON deserialization
     }
 
     public KalahGameResponse(Long id, String uri, Map<Integer, Integer> status) {
