@@ -110,7 +110,7 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones implements Kala
 
     private void changePlayerOrMakeAnotherMove() {
         if (!isPitMineKalah(currentPit)) {
-            // otherwise change the current player
+            // otherwise, change the current player
             changePlayer();
         }
     }
