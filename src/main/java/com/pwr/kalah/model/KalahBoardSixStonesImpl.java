@@ -21,7 +21,6 @@ import com.pwr.kalah.exception.KalahGameException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import static com.pwr.kalah.model.KalahErrorMessages.*;
 
@@ -145,7 +144,7 @@ public class KalahBoardSixStonesImpl extends KalahBoardSixStones {
         );
     }
 
-    public void fillGameFieldWithSample(int[] sampleBoard) {
+    public void fillGameFieldWithSample(int... sampleBoard) {
         boardStatus = BoardStatus.INITIAL;
         if (sampleBoard.length < 1 || sampleBoard.length > MAX_PITS) {
             throw new IllegalArgumentException(INPUT_ARRAY_LENGTH_SIZE_IS_INVALID);

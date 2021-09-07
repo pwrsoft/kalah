@@ -25,7 +25,7 @@ public interface KalahBoard {
      *
      * @param sampleBoard values array
      */
-    void fillGameFieldWithSample(int[] sampleBoard);
+    void fillGameFieldWithSample(int... sampleBoard);
 
     /**
      * Get current player
